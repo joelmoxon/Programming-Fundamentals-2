@@ -32,6 +32,25 @@ tk.Label(main_frame, text="Quantity").pack()
 quantity_entry = tk.Entry(main_frame)
 quantity_entry.pack()
 
+#Adds a Treeview widget to display the inventory in rows and columns
+inventory_list = ttk.Treeview (main_frame, columns=("Name", "Description", "Quantity"), show= "headings", height=10)
+inventory_list.heading("Name", text="Name")
+inventory_list.heading("Description", text="Description")
+inventory_list.heading("Quantity", text="Quantity")
+inventory_list.pack(pady=10, padx=10, fill=tk.BOTH, expand=True)
+
+
+# Updates the inventory list
+def update_inventory():
+
+    #clears the current display
+    inventory_list.delete(*inventory_list.get_children())
+
+    #Adds all items from inventory to display
+    for item in inventory:
+        inventory_list.insert("", "end", values=(item["Name"], item["Description"], item["Quantity"]))
+
+
 # Defines a function to add items to the inventory
 def add_item():
     name = name_entry.get()
@@ -57,6 +76,13 @@ def add_item():
         "Description": description,
         "Quantity": quantity
     })
+
+#  Clears the entry fields after adding an item 
+    name_entry.delete(0, tk.END)
+    description_entry.delete(0, tk.END)
+    quantity_entry.delete(0,tk.END)
+
+    update_inventory()
 
 # Creates a button to call the add item function
 button_frame = tk.Frame(main_frame)
