@@ -56,6 +56,16 @@ def add_item():
     name = name_entry.get()
     description = description_entry.get()
 
+# Handles errors with the entered value for the name field
+    if not name.strip():
+        messagebox.showerror("Error", "Name field cannot be empty")
+        return
+
+# Handles errors with the entered value for the description field
+    if not description.strip():
+        messagebox.showerror("Error", "Description field cannot be empty")
+        return
+
 # Handles any errors with the entered value for the quantitiy field
     if not quantity_entry.get():
         messagebox.showerror("Error", "Quantity field cannot be empty")
@@ -136,6 +146,24 @@ def update_item():
         description_entry.delete(0, tk.END)
         quantity_entry.delete(0, tk.END)
 
+# Defines a function to delete items within the treeview
+def delete_item():
+    selected = inventory_list.selection()
+    if not selected:
+        return
+
+    item_id = inventory_list.index(selected[0])
+
+    if item_id < len(inventory):
+        del inventory[item_id]
+
+        update_inventory()
+
+# Clears entry fields after deleting
+        name_entry.delete(0, tk.END)
+        description_entry.delete(0, tk.END)
+        quantity_entry.delete(0, tk.END)
+
 # Links the select item function to the treeview 
 inventory_list.bind('<<TreeviewSelect>>', select_item)
 
@@ -149,4 +177,6 @@ tk.Button(button_frame, text="Add Item", command=add_item).pack(side=tk.LEFT, pa
 # Creates a button to update selected items
 tk.Button(button_frame, text="Update Item", command=update_item).pack(side=tk.LEFT, padx=5)
 
+# Creates a button to delete selected items
+tk.Button(button_frame, text="Delete Item", command=delete_item).pack(side=tk.LEFT, padx=5)
 root.mainloop()
