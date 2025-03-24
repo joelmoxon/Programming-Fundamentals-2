@@ -32,8 +32,8 @@ tk.Label(main_frame, text="Quantity").pack()
 quantity_entry = tk.Entry(main_frame)
 quantity_entry.pack()
 
-#Adds a Treeview widget to display the inventory in rows and columns
-inventory_list = ttk.Treeview (main_frame, columns=("Name", "Description", "Quantity"), show= "headings", height=10)
+# Adds a Treeview widget to display the inventory in rows and columns
+inventory_list = ttk.Treeview(main_frame, columns=("Name", "Description", "Quantity"), show="headings", height=10)
 inventory_list.heading("Name", text="Name")
 inventory_list.heading("Description", text="Description")
 inventory_list.heading("Quantity", text="Quantity")
@@ -42,11 +42,10 @@ inventory_list.pack(pady=10, padx=10, fill=tk.BOTH, expand=True)
 
 # Updates the inventory list
 def update_inventory():
-
-    #clears the current display
+    # Clears the current display
     inventory_list.delete(*inventory_list.get_children())
 
-    #Adds all items from inventory to display
+    # Adds all items from inventory to display
     for item in inventory:
         inventory_list.insert("", "end", values=(item["Name"], item["Description"], item["Quantity"]))
 
@@ -56,17 +55,17 @@ def add_item():
     name = name_entry.get()
     description = description_entry.get()
 
-# Handles errors with the entered value for the name field
+    # Handles errors with the entered value for the name field
     if not name.strip():
         messagebox.showerror("Error", "Name field cannot be empty")
         return
 
-# Handles errors with the entered value for the description field
+    # Handles errors with the entered value for the description field
     if not description.strip():
         messagebox.showerror("Error", "Description field cannot be empty")
         return
 
-# Handles any errors with the entered value for the quantitiy field
+    # Handles any errors with the entered value for the quantity field
     if not quantity_entry.get():
         messagebox.showerror("Error", "Quantity field cannot be empty")
         return
@@ -77,28 +76,29 @@ def add_item():
             messagebox.showerror("Error", "Quantity cannot be negative")
             return
     except ValueError:
-        messagebox.showerror ("Error", "Quantity must be a whole number")
+        messagebox.showerror("Error", "Quantity must be a whole number")
         return
 
-# Adds the validated item to the inventory list
+    # Adds the validated item to the inventory list
     inventory.append({
         "Name": name,
         "Description": description,
         "Quantity": quantity
     })
 
-#  Clears the entry fields after adding an item 
+    # Clears the entry fields after adding an item 
     name_entry.delete(0, tk.END)
     description_entry.delete(0, tk.END)
-    quantity_entry.delete(0,tk.END)
+    quantity_entry.delete(0, tk.END)
 
     update_inventory()
+
 
 # Defines a function to select items within the treeview 
 def select_item(event):
     selected = inventory_list.selection()
 
-# Handles item selection and clears text from entry fields
+    # Handles item selection and clears text from entry fields
     if selected:
         item_id = inventory_list.index(selected[0])
 
@@ -113,6 +113,7 @@ def select_item(event):
             description_entry.insert(0, item["Description"]) 
             quantity_entry.insert(0, str(item["Quantity"]))
 
+
 # Defines a function to update items within the treeview
 def update_item():
     selected = inventory_list.selection()
@@ -121,7 +122,7 @@ def update_item():
 
     item_id = inventory_list.index(selected[0])
 
-# Handles validity of the updated item
+    # Handles validity of the updated item
     if item_id < len(inventory):
         try:
             quantity = int(quantity_entry.get())
@@ -132,7 +133,7 @@ def update_item():
             messagebox.showerror("Error", "Quantity must be a whole number")
             return
 
-# Updates the values of the item within the inventory 
+        # Updates the values of the item within the inventory 
         inventory[item_id].update({
             "Name": name_entry.get(),
             "Description": description_entry.get(),
@@ -141,10 +142,11 @@ def update_item():
 
         update_inventory()
 
-# Clears entry fields after update 
+        # Clears entry fields after update 
         name_entry.delete(0, tk.END)
         description_entry.delete(0, tk.END)
         quantity_entry.delete(0, tk.END)
+
 
 # Defines a function to delete items within the treeview
 def delete_item():
@@ -159,7 +161,7 @@ def delete_item():
 
         update_inventory()
 
-# Clears entry fields after deleting
+        # Clears entry fields after deleting
         name_entry.delete(0, tk.END)
         description_entry.delete(0, tk.END)
         quantity_entry.delete(0, tk.END)
@@ -180,3 +182,4 @@ tk.Button(button_frame, text="Update Item", command=update_item).pack(side=tk.LE
 # Creates a button to delete selected items
 tk.Button(button_frame, text="Delete Item", command=delete_item).pack(side=tk.LEFT, padx=5)
 root.mainloop()
+
