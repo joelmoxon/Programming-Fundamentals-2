@@ -174,7 +174,7 @@ button_frame = tk.Frame(main_frame)
 button_frame.pack(pady=10)
 
 # Creates a button to add items to the inventory
-
+tk.Button(button_frame, text="Add Item", command=add_item).pack(side=tk.LEFT, padx=5)
 
 # Creates a button to update selected items
 tk.Button(button_frame, text="Update Item", command=update_item).pack(side=tk.LEFT, padx=5)
